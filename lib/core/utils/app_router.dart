@@ -19,6 +19,7 @@ class AppRouter {
   static const String paymentPath = '/payment';
   static const String profilePath = '/profile';
   static const String supportPath = '/support';
+  static const String product5Path = '/product/5';
 
   static final router = GoRouter(
     initialLocation: splashPath,

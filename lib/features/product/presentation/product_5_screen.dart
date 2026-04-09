@@ -1,428 +1,306 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/utils/size_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/size_config.dart';
 import '../../../core/utils/app_router.dart';
+import '../../../core/providers/cart_provider.dart';
 
-class Product5Screen extends StatelessWidget {
+class Product5Screen extends ConsumerStatefulWidget {
   const Product5Screen({super.key});
+  @override
+  ConsumerState<Product5Screen> createState() => _Product5ScreenState();
+}
+
+class _Product5ScreenState extends ConsumerState<Product5Screen> {
+  int _quantity = 2;
+  double _spiceLevel = 0.5;
+  final List<bool> _sideOptions = [false, false, false, false, false];
+  final _sideNames = ['Fries', 'Coleslaw', 'Salad', 'Onion', 'Mozzarella'];
+  final _sideImages = [
+    'assets/images/side_fries.png',
+    'assets/images/side_coleslaw.png',
+    'assets/images/side_salad.png',
+    'assets/images/side_onion.png',
+    'assets/images/side_mozzarella.png',
+  ];
+  final _toppingNames = ['Tomato', 'Onions', 'Pickles', 'Bacons', 'Cheese', 'Mushroom', 'Avocado'];
+  final _toppingImages = [
+    'assets/images/top_tomato.png',
+    'assets/images/top_onions.png',
+    'assets/images/top_pickles.png',
+    'assets/images/top_bacons.png',
+    'assets/images/top_cheese.png',
+    'assets/images/top_mushroom.png',
+    'assets/images/top_avocado.png',
+  ];
+  final List<bool> _toppings = [false, false, false, false, false, false, false];
 
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            // Top Bar
-            Positioned(
-              left: SizeConfig.w(12),
-              top: SizeConfig.h(22),
-              child: GestureDetector(
-                onTap: () => context.pop(),
-                child: Container(
-                  width: SizeConfig.w(28),
-                  height: SizeConfig.h(28),
-                  alignment: Alignment.center,
-                  child: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-                ),
-              ),
-            ),
-            Positioned(
-              right: SizeConfig.w(19),
-              top: SizeConfig.h(28),
-              child: Icon(Icons.search, size: SizeConfig.w(20), color: AppColors.textPrimary),
-            ),
-
-            // Left Side Big Image (Burger sticking out)
-            Positioned(
-              top: SizeConfig.h(109),
-              left: SizeConfig.w(-26),
-              width: SizeConfig.w(217),
-              height: SizeConfig.h(297),
-              child: Image.network(
-                'https://placehold.co/217x297/png',
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(color: Colors.grey.withOpacity(0.2)),
-              ),
-            ),
-
-            // Main Text
-            Positioned(
-              top: SizeConfig.h(94),
-              left: SizeConfig.w(249),
-              width: SizeConfig.w(162),
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "Customize\n",
-                      style: AppTextStyles.robotoText.copyWith(
-                        fontWeight: FontWeight.w800,
-                        fontSize: SizeConfig.w(16),
-                        height: 1.8,
+        child: SingleChildScrollView(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(12), vertical: SizeConfig.h(8)),
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                GestureDetector(onTap: () => context.pop(), child: Icon(Icons.arrow_back, size: SizeConfig.w(28), color: AppColors.textPrimary)),
+                Icon(Icons.search, size: SizeConfig.w(20), color: AppColors.textPrimary),
+              ])),
+            // Image + customize text side by side
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Image.asset('assets/images/burger_5.png', width: SizeConfig.w(200), height: SizeConfig.h(280), fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(width: SizeConfig.w(200), height: SizeConfig.h(280), color: AppColors.background, child: const Icon(Icons.fastfood, size: 60))),
+                SizedBox(width: SizeConfig.w(12)),
+                Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  SizedBox(height: SizeConfig.h(20)),
+                  Text('Customize Your Burger to Your Tastes. Ultimate Experience',
+                    style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(15))),
+                  SizedBox(height: SizeConfig.h(30)),
+                  // Spicy
+                  Text('Spicy', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(14))),
+                  SizedBox(height: SizeConfig.h(6)),
+                  SizedBox(
+                    width: SizeConfig.w(200),
+                    child: SliderTheme(
+                      data: SliderThemeData(
+                        activeTrackColor: AppColors.primary,
+                        inactiveTrackColor: AppColors.background,
+                        thumbColor: AppColors.primary,
+                        overlayShape: SliderComponentShape.noOverlay,
+                        thumbShape: RoundSliderThumbShape(enabledThumbRadius: SizeConfig.w(7)),
+                        trackHeight: SizeConfig.h(6),
                       ),
-                    ),
-                    TextSpan(
-                      text: "Your Burger to Your Tastes. Ultimate Experience",
-                      style: AppTextStyles.robotoText.copyWith(
-                        fontWeight: FontWeight.w400,
-                        fontSize: SizeConfig.w(14),
-                        height: 1.8,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Spicy Section
-            Positioned(
-              top: SizeConfig.h(206),
-              left: SizeConfig.w(249),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Spicy',
-                    style: AppTextStyles.robotoText.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: SizeConfig.w(14),
-                    ),
-                  ),
-                  SizedBox(height: SizeConfig.h(16)),
-                  Container(
-                    width: SizeConfig.w(156),
-                    child: Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        Container(
-                          height: SizeConfig.h(10),
-                          decoration: BoxDecoration(
-                            color: AppColors.background,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        Container(
-                          height: SizeConfig.h(10),
-                          width: SizeConfig.w(60),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ],
+                      child: Slider(value: _spiceLevel, onChanged: (v) => setState(() => _spiceLevel = v)),
                     ),
                   ),
                   SizedBox(height: SizeConfig.h(8)),
-                  Container(
-                    width: SizeConfig.w(156),
+                  SizedBox(
+                    width: SizeConfig.w(200),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Mild',
-                          style: AppTextStyles.robotoText.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: SizeConfig.w(12),
-                            color: const Color(0xFF1CC019),
-                          ),
-                        ),
-                        Text(
-                          'Hot',
-                          style: AppTextStyles.robotoText.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: SizeConfig.w(12),
-                            color: AppColors.primary,
-                          ),
-                        ),
+                        Text('Mild', style: AppTextStyles.robotoMedium.copyWith(fontSize: SizeConfig.w(12), color: const Color(0xFF1CC019))),
+                        Text('Hot', style: AppTextStyles.robotoMedium.copyWith(fontSize: SizeConfig.w(12), color: const Color(0xFFEF2A39))),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-
-            // Portion Section
-            Positioned(
-              top: SizeConfig.h(327),
-              left: SizeConfig.w(249),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Portion',
-                    style: AppTextStyles.robotoText.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: SizeConfig.w(14),
-                    ),
-                  ),
-                  SizedBox(height: SizeConfig.h(10)),
-                  Row(
-                    children: [
-                      Container(
-                        width: SizeConfig.w(40),
-                        height: SizeConfig.w(40),
-                        decoration: BoxDecoration(
-                          color: AppColors.background,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(Icons.remove, size: SizeConfig.w(20)),
-                      ),
-                      SizedBox(width: SizeConfig.w(15)),
-                      Text(
-                        '2',
-                        style: AppTextStyles.interText.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: SizeConfig.w(18),
-                        ),
-                      ),
-                      SizedBox(width: SizeConfig.w(15)),
-                      Container(
-                        width: SizeConfig.w(40),
-                        height: SizeConfig.w(40),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.primary.withOpacity(0.3),
-                              blurRadius: 13,
-                              offset: const Offset(0, 7),
-                            ),
-                          ],
-                        ),
-                        child: Icon(Icons.add, color: AppColors.white, size: SizeConfig.w(20)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            // Toppings Header
-            Positioned(
-              top: SizeConfig.h(451),
-              left: SizeConfig.w(19),
-              child: Text(
-                'Toppings',
-                style: AppTextStyles.robotoText.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: SizeConfig.w(18),
-                ),
-              ),
-            ),
-
-            // Toppings Scroll Row (Tomato, Onions, Pickles, Bacons, Cheese, Mushroom, Avocado)
-            // Wait, Figma has Toppings and Side options flipped? Let's follow Figma EXACTLY exactly as it was output:
-            // "Toppings" is at 451. The row under it is at 484. The items at 484 are: Tomato, Onions, Pickles, Bacons, Cheese, Mushroom, Avocado.
-            Positioned(
-              top: SizeConfig.h(484),
-              left: 0,
-              width: SizeConfig.screenWidth,
-              height: SizeConfig.h(99),
-              child: SingleChildScrollView(
+                  SizedBox(height: SizeConfig.h(20)),
+                  // Portion
+                  Text('Portion', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(14))),
+                  SizedBox(height: SizeConfig.h(11)),
+                  Row(children: [
+                    _circleButton(Icons.remove, () { if (_quantity > 1) setState(() => _quantity--); }),
+                    SizedBox(width: SizeConfig.w(14)),
+                    Text('$_quantity', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(18))),
+                    SizedBox(width: SizeConfig.w(14)),
+                    _circleButton(Icons.add, () => setState(() => _quantity++)),
+                  ]),
+                ])),
+              ])),
+            SizedBox(height: SizeConfig.h(20)),
+            // Toppings
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+              child: Text('Toppings', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(18)))),
+            SizedBox(height: SizeConfig.h(12)),
+            SizedBox(height: SizeConfig.h(99),
+              child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(20)),
-                child: Row(
-                  children: [
-                    _buildOptionCard(title: 'Tomato', isSelected: true),
-                    _buildOptionCard(title: 'Onions', isSelected: false),
-                    _buildOptionCard(title: 'Pickles', isSelected: false),
-                    _buildOptionCard(title: 'Bacons', isSelected: true),
-                    _buildOptionCard(title: 'Cheese', isSelected: false),
-                    _buildOptionCard(title: 'Mushroom', isSelected: false),
-                    _buildOptionCard(title: 'Avocado', isSelected: false),
-                  ],
-                ),
-              ),
-            ),
-
-            // Side Options Header
-            Positioned(
-              top: SizeConfig.h(613),
-              left: SizeConfig.w(19),
-              child: Text(
-                'Side options',
-                style: AppTextStyles.robotoText.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: SizeConfig.w(18),
-                ),
-              ),
-            ),
-
-            // Side Options Scroll Row (Fries, Coleslaw, Salad, Onion, Mozzarella)
-            // Starts at 646. Height 116.
-            Positioned(
-              top: SizeConfig.h(646),
-              left: 0,
-              width: SizeConfig.screenWidth,
-              height: SizeConfig.h(116),
-              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+                itemCount: _toppingNames.length,
+                separatorBuilder: (_, error) => SizedBox(width: SizeConfig.w(30)),
+                itemBuilder: (_, i) => _toppingItem(i),
+              )),
+            SizedBox(height: SizeConfig.h(20)),
+            // Side options
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+              child: Text('Side options', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(18)))),
+            SizedBox(height: SizeConfig.h(12)),
+            SizedBox(height: SizeConfig.h(116),
+              child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(20)),
-                child: Row(
-                  children: [
-                    _buildOptionCard(title: 'Fries', height: 116),
-                    _buildOptionCard(title: 'Coleslaw', height: 116),
-                    _buildOptionCard(title: 'Salad', height: 116),
-                    _buildOptionCard(title: 'Onion', height: 116),
-                    _buildOptionCard(title: 'Mozzarella', height: 116),
-                  ],
-                ),
-              ),
-            ),
-
-            // Bottom Section (Price and Order Button)
-            Positioned(
-              top: SizeConfig.h(826),
-              left: SizeConfig.w(19),
-              child: Text(
-                'Total',
-                style: AppTextStyles.robotoText.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: SizeConfig.w(18),
-                ),
-              ),
-            ),
-            Positioned(
-              top: SizeConfig.h(855),
-              left: SizeConfig.w(19),
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: "\$",
-                      style: AppTextStyles.robotoText.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: SizeConfig.w(24),
-                        color: AppColors.primary,
-                      ),
-                    ),
-                    TextSpan(
-                      text: "16.49",
-                      style: AppTextStyles.robotoText.copyWith(
-                        fontWeight: FontWeight.w600,
-                        fontSize: SizeConfig.w(36),
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // Order Button
-            Positioned(
-              top: SizeConfig.h(827),
-              left: SizeConfig.w(211),
-              child: GestureDetector(
-                onTap: () => context.push(AppRouter.paymentPath),
-                child: Container(
-                  width: SizeConfig.w(200),
-                  height: SizeConfig.h(70),
-                  alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppColors.primary,
-                  borderRadius: BorderRadius.circular(SizeConfig.w(20)),
-                ),
-                child: Text(
-                  'ORDER NOW',
-                  style: AppTextStyles.interText.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontSize: SizeConfig.w(18),
-                    color: AppColors.white,
-                  ),
-                ),
-                ),
-              ),
-            ),
-          ],
+                padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+                itemCount: _sideNames.length,
+                separatorBuilder: (_, error) => SizedBox(width: SizeConfig.w(30)),
+                itemBuilder: (_, i) => _sideItem(i),
+              )),
+            SizedBox(height: SizeConfig.h(30)),
+            // Bottom: Total + ORDER NOW
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('Total', style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(16), color: AppColors.textSecondary)),
+                SizedBox(height: SizeConfig.h(5)),
+                Row(children: [
+                  _priceText('\$16.49', AppTextStyles.poppinsBold.copyWith(fontSize: SizeConfig.w(34), color: AppColors.textPrimary)),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: () {
+                      ref.read(cartProvider.notifier).addItem(CartItem(productId: '5', name: 'Custom Burger', price: '\$16.49', quantity: _quantity));
+                      context.push(AppRouter.paymentPath);
+                    },
+                    child: Container(width: SizeConfig.w(200), height: SizeConfig.h(70),
+                      decoration: BoxDecoration(color: AppColors.textPrimary, borderRadius: BorderRadius.circular(SizeConfig.w(20))),
+                      alignment: Alignment.center,
+                      child: Text('ORDER NOW', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(18), color: AppColors.white)))),
+                ]),
+              ])),
+            SizedBox(height: SizeConfig.h(20)),
+          ]),
         ),
       ),
     );
   }
 
-  Widget _buildOptionCard({required String title, bool isSelected = false, double height = 99}) {
-    return Container(
-      width: SizeConfig.w(84),
-      height: SizeConfig.h(height),
-      margin: EdgeInsets.only(right: SizeConfig.w(30)), // gap is 30 in figma
-      child: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          // Background
+  Widget _toppingItem(int i) => GestureDetector(
+    onTap: () => setState(() => _toppings[i] = !_toppings[i]),
+    child: Column(children: [
+      Stack(children: [
+        Container(
+          width: SizeConfig.w(84),
+          height: SizeConfig.h(70),
+          decoration: BoxDecoration(
+            color: _toppings[i] ? AppColors.primary.withValues(alpha: 0.1) : AppColors.background,
+            borderRadius: BorderRadius.circular(SizeConfig.w(15)),
+            border: _toppings[i] ? Border.all(color: AppColors.primary, width: 2) : null,
+          ),
+          alignment: Alignment.center,
+          child: Image.asset(_toppingImages[i], width: SizeConfig.w(50), height: SizeConfig.h(50), fit: BoxFit.contain),
+        ),
+        if (_toppings[i])
           Positioned(
+            left: 0,
+            right: 0,
             bottom: 0,
             child: Container(
-              width: SizeConfig.w(84),
-              height: SizeConfig.h(height - (height == 116 ? 47 : 30)),
+              height: SizeConfig.h(22),
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(6)),
               decoration: BoxDecoration(
                 color: AppColors.textPrimary,
-                borderRadius: BorderRadius.circular(SizeConfig.w(15)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.2),
-                    blurRadius: 18,
-                    offset: const Offset(0, 6),
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(SizeConfig.w(13))),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      _toppingNames[i],
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(10), color: AppColors.white),
+                    ),
+                  ),
+                  Container(
+                    width: SizeConfig.w(16),
+                    height: SizeConfig.w(16),
+                    decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                    child: Icon(Icons.add, size: SizeConfig.w(12), color: AppColors.white),
                   ),
                 ],
               ),
             ),
           ),
-          // Background for selected or unselected top part? Actually Figma has two rectangles overlapping. 
-          // The background of the white card where the image sits is: w 84, h 78 for side options (total 116) or 61 for toppings (total 99)
+      ]),
+      SizedBox(height: SizeConfig.h(8)),
+      if (!_toppings[i])
+        Row(mainAxisSize: MainAxisSize.min, children: [
+          Text(_toppingNames[i], style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(12), color: AppColors.textSecondary)),
+          SizedBox(width: SizeConfig.w(4)),
+          Icon(Icons.radio_button_unchecked, size: SizeConfig.w(16), color: AppColors.textSecondary),
+        ]),
+    ]));
+
+  Widget _sideItem(int i) => GestureDetector(
+    onTap: () => setState(() => _sideOptions[i] = !_sideOptions[i]),
+    child: Column(children: [
+      Stack(children: [
+        Container(
+          width: SizeConfig.w(84),
+          height: SizeConfig.h(86),
+          decoration: BoxDecoration(
+            color: _sideOptions[i] ? AppColors.primary.withValues(alpha: 0.1) : AppColors.background,
+            borderRadius: BorderRadius.circular(SizeConfig.w(15)),
+            border: _sideOptions[i] ? Border.all(color: AppColors.primary, width: 2) : null,
+          ),
+          alignment: Alignment.center,
+          child: Image.asset(_sideImages[i], width: SizeConfig.w(65), height: SizeConfig.h(65), fit: BoxFit.contain),
+        ),
+        if (_sideOptions[i])
           Positioned(
-            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
             child: Container(
-              width: SizeConfig.w(84),
-              height: SizeConfig.h(height == 116 ? 78 : 61),
+              height: SizeConfig.h(24),
+              padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(6)),
               decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(SizeConfig.w(15)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    blurRadius: 12,
+                color: AppColors.textPrimary,
+                borderRadius: BorderRadius.vertical(bottom: Radius.circular(SizeConfig.w(13))),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      _sideNames[i],
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(10), color: AppColors.white),
+                    ),
+                  ),
+                  Container(
+                    width: SizeConfig.w(16),
+                    height: SizeConfig.w(16),
+                    decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+                    child: Icon(Icons.add, size: SizeConfig.w(12), color: AppColors.white),
                   ),
                 ],
               ),
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: SizeConfig.h(10)),
-                  child: Image.network('https://placehold.co/40x40/png', width: SizeConfig.w(40)),
-                ),
-              ),
             ),
           ),
-          // Text and Icon at the bottom
-          Positioned(
-            bottom: SizeConfig.h(height == 116 ? 13 : 13), // approx 13 from bottom
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  title,
-                  style: AppTextStyles.robotoText.copyWith(
-                    fontWeight: FontWeight.w500,
-                    fontSize: SizeConfig.w(12),
-                    color: AppColors.white,
-                  ),
-                ),
-                SizedBox(width: SizeConfig.w(4)),
-                // checkbox icon if selected (we can mock it with an icon)
-                if (isSelected) 
-                  Icon(Icons.check_circle, size: SizeConfig.w(12), color: Colors.amber) // Mocking the selection icon
-                else
-                  Icon(Icons.add_circle_outline, size: SizeConfig.w(12), color: AppColors.white),
-              ],
-            ),
-          ),
+      ]),
+      SizedBox(height: SizeConfig.h(8)),
+      if (!_sideOptions[i])
+        Row(mainAxisSize: MainAxisSize.min, children: [
+          Text(_sideNames[i], style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(12), color: AppColors.textSecondary)),
+          SizedBox(width: SizeConfig.w(4)),
+          Icon(Icons.radio_button_unchecked, size: SizeConfig.w(16), color: AppColors.textSecondary),
+        ]),
+    ]));
+
+  Widget _priceText(String value, TextStyle style) {
+    if (!value.startsWith('\$')) {
+      return Text(value, style: style);
+    }
+    return RichText(
+      text: TextSpan(
+        style: style,
+        children: [
+          TextSpan(text: '\$', style: style.copyWith(color: AppColors.primary)),
+          TextSpan(text: value.substring(1)),
         ],
       ),
     );
   }
+
+  Widget _circleButton(IconData icon, VoidCallback onTap) => GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: SizeConfig.w(40),
+          height: SizeConfig.w(40),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(SizeConfig.w(10)),
+            color: AppColors.primary,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.3),
+                blurRadius: 13,
+                offset: const Offset(0, 7),
+              ),
+            ],
+          ),
+          child: Icon(icon, size: SizeConfig.w(18), color: AppColors.white),
+        ),
+      );
 }

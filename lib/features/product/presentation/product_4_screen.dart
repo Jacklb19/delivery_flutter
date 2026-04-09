@@ -1,197 +1,129 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/utils/size_config.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_text_styles.dart';
+import '../../../core/utils/size_config.dart';
 import '../../../core/utils/app_router.dart';
+import '../../../core/providers/cart_provider.dart';
 
-class Product4Screen extends StatelessWidget {
+class Product4Screen extends ConsumerStatefulWidget {
   const Product4Screen({super.key});
+  @override
+  ConsumerState<Product4Screen> createState() => _Product4ScreenState();
+}
+
+class _Product4ScreenState extends ConsumerState<Product4Screen> {
+  int _quantity = 4;
+  double _spiceLevel = 0.5;
 
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-
-    // Identical template to 1 & 2 & 3 but with distinct content
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned(
-              left: SizeConfig.w(12),
-              top: SizeConfig.h(22),
-              child: GestureDetector(
-                onTap: () => context.pop(),
-                child: Container(
-                  width: SizeConfig.w(28),
-                  height: SizeConfig.h(28),
+        child: SingleChildScrollView(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(12), vertical: SizeConfig.h(8)),
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                GestureDetector(onTap: () => context.pop(), child: Icon(Icons.arrow_back, size: SizeConfig.w(28), color: AppColors.textPrimary)),
+                Icon(Icons.search, size: SizeConfig.w(20), color: AppColors.textPrimary),
+              ])),
+            Center(child: Image.asset('assets/images/burger_4.png', width: SizeConfig.w(360), height: SizeConfig.h(278), fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(width: SizeConfig.w(360), height: SizeConfig.h(278), color: AppColors.background, child: const Icon(Icons.fastfood, size: 80)))),
+            SizedBox(height: SizeConfig.h(16)),
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+              child: Text('Fried Chicken Burger', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(24)))),
+            SizedBox(height: SizeConfig.h(9)),
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+              child: Row(children: [
+                Icon(Icons.star, color: AppColors.starYellow, size: SizeConfig.w(16)),
+                SizedBox(width: SizeConfig.w(5)),
+                Text('4.5', style: AppTextStyles.robotoMedium.copyWith(fontSize: SizeConfig.w(14))),
+                SizedBox(width: SizeConfig.w(18)),
+                Container(width: SizeConfig.w(8), height: 1, color: AppColors.textPrimary),
+                SizedBox(width: SizeConfig.w(10)),
+                Text('14 mins', style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(14), color: AppColors.textSecondary)),
+              ])),
+            SizedBox(height: SizeConfig.h(20)),
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+              child: Text('Indulge in our crispy and savory Fried Chicken Burger, made with a juicy chicken patty, hand-breaded and deep-fried to perfection, served on a warm bun with lettuce, tomato, and a creamy sauce.',
+                style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(15), color: AppColors.textSecondary, height: 1.5))),
+            SizedBox(height: SizeConfig.h(29)),
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+              child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                _spicySection(), const Spacer(), _portionSection(),
+              ])),
+            SizedBox(height: SizeConfig.h(60)),
+            Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(19)),
+              child: Row(children: [
+                Container(width: SizeConfig.w(104), height: SizeConfig.h(70),
+                  decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(SizeConfig.w(20))),
                   alignment: Alignment.center,
-                  child: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-                ),
-              ),
-            ),
-            Positioned(
-              right: SizeConfig.w(19),
-              top: SizeConfig.h(28),
-              child: Icon(Icons.search, size: SizeConfig.w(20), color: AppColors.textPrimary),
-            ),
-            Positioned(
-              top: SizeConfig.h(36),
-              left: SizeConfig.w(40),
-              width: SizeConfig.w(350),
-              height: SizeConfig.h(355),
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(bottom: SizeConfig.h(10)), // Approximate shadow
-                    width: SizeConfig.w(268),
-                    height: SizeConfig.h(28),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                  ),
-                  Image.network('https://placehold.co/350x355/png', fit: BoxFit.cover),
-                ],
-              ),
-            ),
-            Positioned(
-              top: SizeConfig.h(442),
-              left: SizeConfig.w(19),
-              child: Text(
-                "Fried Chicken Burger",
-                style: AppTextStyles.robotoText.copyWith(
-                  fontWeight: FontWeight.w600,
-                  fontSize: SizeConfig.w(25),
-                  height: 1.0,
-                ),
-              ),
-            ),
-            Positioned(
-              top: SizeConfig.h(485),
-              left: SizeConfig.w(19),
-              child: Row(
-                children: [
-                  Icon(Icons.star, color: Colors.amber, size: SizeConfig.w(16)),
-                  SizedBox(width: SizeConfig.w(5)),
-                  Text(
-                    '4.5',
-                    style: AppTextStyles.robotoText.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: SizeConfig.w(15),
-                      color: const Color(0xFF808080),
-                    ),
-                  ),
-                  SizedBox(width: SizeConfig.w(15)),
-                  Text('-', style: TextStyle(color: const Color(0xFF808080), fontSize: SizeConfig.w(15))),
-                  SizedBox(width: SizeConfig.w(15)),
-                  Text(
-                    '14 mins',
-                    style: AppTextStyles.robotoText.copyWith(
-                      fontWeight: FontWeight.w500,
-                      fontSize: SizeConfig.w(15),
-                      color: const Color(0xFF808080),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: SizeConfig.h(524),
-              left: SizeConfig.w(19),
-              width: SizeConfig.w(392),
-              child: Text(
-                "Indulge in our crispy and savory Fried Chicken Burger, made with a juicy chicken patty, hand-breaded and deep-fried to perfection, served on a warm bun with lettuce, tomato, and a creamy sauce.",
-                style: AppTextStyles.robotoText.copyWith(
-                  fontWeight: FontWeight.w400,
-                  fontSize: SizeConfig.w(16),
-                  color: AppColors.textSecondary,
-                  height: 1.46,
-                ),
-              ),
-            ),
-            Positioned(
-              top: SizeConfig.h(688),
-              left: SizeConfig.w(19),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Spicy', style: AppTextStyles.robotoText.copyWith(fontWeight: FontWeight.w500, fontSize: SizeConfig.w(14))),
-                  SizedBox(height: SizeConfig.h(16)),
-                  Container(
-                    width: SizeConfig.w(165),
-                    child: Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        Container(height: SizeConfig.h(10), decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(10))),
-                        Container(height: SizeConfig.h(10), width: SizeConfig.w(60), decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(10))),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: SizeConfig.h(8)),
-                  Container(
-                    width: SizeConfig.w(165),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Mild', style: AppTextStyles.robotoText.copyWith(fontWeight: FontWeight.w500, fontSize: SizeConfig.w(12), color: const Color(0xFF1CC019))),
-                        Text('Hot', style: AppTextStyles.robotoText.copyWith(fontWeight: FontWeight.w500, fontSize: SizeConfig.w(12), color: AppColors.primary)),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: SizeConfig.h(688),
-              left: SizeConfig.w(290),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Portion', style: AppTextStyles.robotoText.copyWith(fontWeight: FontWeight.w500, fontSize: SizeConfig.w(14))),
-                  SizedBox(height: SizeConfig.h(10)),
-                  Row(
-                    children: [
-                      Container(width: SizeConfig.w(40), height: SizeConfig.w(40), decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(10)), child: Icon(Icons.remove, size: SizeConfig.w(20))),
-                      SizedBox(width: SizeConfig.w(15)),
-                      Text('4', style: AppTextStyles.interText.copyWith(fontWeight: FontWeight.w500, fontSize: SizeConfig.w(18))),
-                      SizedBox(width: SizeConfig.w(15)),
-                      Container(width: SizeConfig.w(40), height: SizeConfig.w(40), decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(10), boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.3), blurRadius: 13, offset: const Offset(0, 7))]), child: Icon(Icons.add, color: AppColors.white, size: SizeConfig.w(20))),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: SizeConfig.h(828),
-              left: SizeConfig.w(19),
-              child: Container(
-                width: SizeConfig.w(104),
-                height: SizeConfig.h(70),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(SizeConfig.w(20)), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.25), blurRadius: 30, offset: const Offset(0, 9))]),
-                child: Text('\$26.99', style: AppTextStyles.robotoText.copyWith(fontWeight: FontWeight.w600, fontSize: SizeConfig.w(22), color: AppColors.white)),
-              ),
-            ),
-            Positioned(
-              top: SizeConfig.h(828),
-              left: SizeConfig.w(172),
-              child: GestureDetector(
-                onTap: () => context.push(AppRouter.paymentPath),
-                child: Container(
-                  width: SizeConfig.w(239),
-                  height: SizeConfig.h(70),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(color: AppColors.textPrimary, borderRadius: BorderRadius.circular(SizeConfig.w(20)), boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.25), blurRadius: 30, offset: const Offset(0, 9))]),
-                  child: Text('ORDER NOW', style: AppTextStyles.interText.copyWith(fontWeight: FontWeight.w600, fontSize: SizeConfig.w(18), color: AppColors.white)),
-                ),
-              ),
-            ),
-          ],
+                  child: Text('\$26.99', style: AppTextStyles.poppinsBold.copyWith(fontSize: SizeConfig.w(22), color: AppColors.white))),
+                SizedBox(width: SizeConfig.w(49)),
+                Expanded(child: GestureDetector(
+                  onTap: () {
+                    ref.read(cartProvider.notifier).addItem(CartItem(productId: '4', name: 'Fried Chicken Burger', price: '\$26.99', quantity: _quantity));
+                    context.push(AppRouter.product5Path);
+                  },
+                  child: Container(height: SizeConfig.h(70),
+                    decoration: BoxDecoration(color: AppColors.textPrimary, borderRadius: BorderRadius.circular(SizeConfig.w(20))),
+                    alignment: Alignment.center,
+                    child: Text('ORDER NOW', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(18), color: AppColors.white))))),
+              ])),
+            SizedBox(height: SizeConfig.h(20)),
+          ]),
         ),
       ),
     );
   }
+
+  Widget _spicySection() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    Text('Spicy', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(14))),
+    SizedBox(height: SizeConfig.h(6)),
+    SizedBox(width: SizeConfig.w(200), child: SliderTheme(
+      data: SliderThemeData(activeTrackColor: AppColors.primary, inactiveTrackColor: AppColors.background, thumbColor: AppColors.primary,
+        overlayShape: SliderComponentShape.noOverlay,
+        thumbShape: RoundSliderThumbShape(enabledThumbRadius: SizeConfig.w(7)), trackHeight: SizeConfig.h(6)),
+      child: Slider(value: _spiceLevel, onChanged: (v) => setState(() => _spiceLevel = v)))),
+    SizedBox(height: SizeConfig.h(8)),
+    SizedBox(width: SizeConfig.w(200), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Text('Mild', style: AppTextStyles.robotoMedium.copyWith(fontSize: SizeConfig.w(12), color: const Color(0xFF1CC019))),
+      Text('Hot', style: AppTextStyles.robotoMedium.copyWith(fontSize: SizeConfig.w(12), color: const Color(0xFFEF2A39))),
+    ])),
+  ]);
+
+  Widget _portionSection() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    Text('Portion', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(14))),
+    SizedBox(height: SizeConfig.h(11)),
+    Row(children: [
+      _circleButton(Icons.remove, () { if (_quantity > 1) setState(() => _quantity--); }),
+      SizedBox(width: SizeConfig.w(14)),
+      Text('$_quantity', style: AppTextStyles.robotoSemiBold.copyWith(fontSize: SizeConfig.w(18))),
+      SizedBox(width: SizeConfig.w(14)),
+      _circleButton(Icons.add, () => setState(() => _quantity++)),
+    ]),
+  ]);
+
+  Widget _circleButton(IconData icon, VoidCallback onTap) => GestureDetector(
+        onTap: onTap,
+        child: Container(
+          width: SizeConfig.w(40),
+          height: SizeConfig.w(40),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(SizeConfig.w(10)),
+            color: AppColors.primary,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.3),
+                blurRadius: 13,
+                offset: const Offset(0, 7),
+              ),
+            ],
+          ),
+          child: Icon(icon, size: SizeConfig.w(18), color: AppColors.white),
+        ),
+      );
 }
