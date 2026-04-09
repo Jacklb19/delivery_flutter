@@ -163,20 +163,19 @@ class _Product5ScreenState extends ConsumerState<Product5Screen> {
         height: SizeConfig.h(70),
         decoration: BoxDecoration(
           color: _toppings[i] ? AppColors.primary.withValues(alpha: 0.1) : AppColors.background,
-          borderRadius: BorderRadius.circular(SizeConfig.w(15)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(SizeConfig.w(15))),
           border: _toppings[i] ? Border.all(color: AppColors.primary, width: 2) : null,
         ),
         alignment: Alignment.center,
         child: Image.asset(_toppingImages[i], width: SizeConfig.w(50), height: SizeConfig.h(50), fit: BoxFit.contain),
       ),
-      SizedBox(height: SizeConfig.h(6)),
       Container(
         width: SizeConfig.w(84),
         height: SizeConfig.h(22),
         padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(6)),
         decoration: BoxDecoration(
           color: AppColors.textPrimary,
-          borderRadius: BorderRadius.circular(SizeConfig.w(11)),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(SizeConfig.w(15))),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -207,20 +206,19 @@ class _Product5ScreenState extends ConsumerState<Product5Screen> {
         height: SizeConfig.h(86),
         decoration: BoxDecoration(
           color: _sideOptions[i] ? AppColors.primary.withValues(alpha: 0.1) : AppColors.background,
-          borderRadius: BorderRadius.circular(SizeConfig.w(15)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(SizeConfig.w(15))),
           border: _sideOptions[i] ? Border.all(color: AppColors.primary, width: 2) : null,
         ),
         alignment: Alignment.center,
         child: Image.asset(_sideImages[i], width: SizeConfig.w(65), height: SizeConfig.h(65), fit: BoxFit.contain),
       ),
-      SizedBox(height: SizeConfig.h(6)),
       Container(
         width: SizeConfig.w(84),
         height: SizeConfig.h(24),
         padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(6)),
         decoration: BoxDecoration(
           color: AppColors.textPrimary,
-          borderRadius: BorderRadius.circular(SizeConfig.w(12)),
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(SizeConfig.w(15))),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
