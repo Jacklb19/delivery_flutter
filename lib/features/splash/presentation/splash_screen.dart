@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
               left: SizeConfig.w(134),
               top: SizeConfig.h(758),
               child: Image.asset(
-                'assets/images/splash_food_1.png',
+                'assets/images/burger_2.png',
                 width: SizeConfig.w(202),
                 height: SizeConfig.h(202),
                 fit: BoxFit.contain,
@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
               left: SizeConfig.w(-42),
               top: SizeConfig.h(681),
               child: Image.asset(
-                'assets/images/burger_2.png',
+                'assets/images/splash_food_1.png',
                 width: SizeConfig.w(246),
                 height: SizeConfig.h(288),
                 fit: BoxFit.contain,

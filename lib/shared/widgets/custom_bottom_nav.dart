@@ -12,15 +12,15 @@ class CustomBottomNav extends StatelessWidget {
     return BottomAppBar(
       color: AppColors.primary,
       shape: const CircularNotchedRectangle(),
-      notchMargin: 8,
+      notchMargin: 10,
       padding: EdgeInsets.zero,
-      height: 90,
+      height: 70,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _navItem(context, Icons.home_rounded, 0, AppRouter.homePath),
           _navItem(context, Icons.person_outline_rounded, 1, AppRouter.profilePath),
-          const SizedBox(width: 48), // space for notch
+          const SizedBox(width: 50), // space for notch
           _navItem(context, Icons.chat_bubble_outline_rounded, 2, AppRouter.supportPath),
           _navItem(context, Icons.favorite_border_rounded, 3, AppRouter.homePath),
         ],
@@ -38,7 +38,7 @@ class CustomBottomNav extends StatelessWidget {
           Icon(
             icon,
             color: AppColors.white,
-            size: 24,
+            size: 30,
           ),
           if (isActive)
             Container(

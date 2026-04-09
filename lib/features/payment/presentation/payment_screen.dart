@@ -108,7 +108,7 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
               child: Row(children: [
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text('Total price', style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(14), color: AppColors.textSecondary)),
-                  Text('\$${total.toStringAsFixed(2)}', style: AppTextStyles.poppinsBold.copyWith(fontSize: SizeConfig.w(28), color: AppColors.textPrimary)),
+                  _priceText('\$${total.toStringAsFixed(2)}', AppTextStyles.poppinsBold.copyWith(fontSize: SizeConfig.w(28), color: AppColors.textPrimary)),
                 ]),
                 const Spacer(),
                 GestureDetector(
@@ -137,8 +137,23 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
     return Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(36)),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(label, style: style),
-        Text(value, style: style),
+        _priceText(value, style),
       ]));
+  }
+
+  Widget _priceText(String value, TextStyle style) {
+    if (!value.startsWith('\$')) {
+      return Text(value, style: style);
+    }
+    return RichText(
+      text: TextSpan(
+        style: style,
+        children: [
+          TextSpan(text: '\$', style: style.copyWith(color: AppColors.primary)),
+          TextSpan(text: value.substring(1)),
+        ],
+      ),
+    );
   }
 
   Widget _paymentCard({
@@ -161,19 +176,10 @@ class _PaymentScreenState extends ConsumerState<PaymentScreen> {
           padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(15)),
           child: Row(children: [
             // Card logo
-            Container(
+            SizedBox(
               width: SizeConfig.w(64),
               height: SizeConfig.h(40),
-              decoration: BoxDecoration(
-                color: isSelected ? Colors.white24 : AppColors.background,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              padding: EdgeInsets.all(SizeConfig.w(6)),
-              alignment: Alignment.center,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Image.asset(logoAsset),
-              ),
+              child: Image.asset(logoAsset, fit: BoxFit.contain),
             ),
             SizedBox(width: SizeConfig.w(20)),
             Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [

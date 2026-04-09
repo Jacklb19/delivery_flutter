@@ -158,115 +158,89 @@ class _Product5ScreenState extends ConsumerState<Product5Screen> {
   Widget _toppingItem(int i) => GestureDetector(
     onTap: () => setState(() => _toppings[i] = !_toppings[i]),
     child: Column(children: [
-      Stack(children: [
-        Container(
-          width: SizeConfig.w(84),
-          height: SizeConfig.h(70),
-          decoration: BoxDecoration(
-            color: _toppings[i] ? AppColors.primary.withValues(alpha: 0.1) : AppColors.background,
-            borderRadius: BorderRadius.circular(SizeConfig.w(15)),
-            border: _toppings[i] ? Border.all(color: AppColors.primary, width: 2) : null,
-          ),
-          alignment: Alignment.center,
-          child: Image.asset(_toppingImages[i], width: SizeConfig.w(50), height: SizeConfig.h(50), fit: BoxFit.contain),
+      Container(
+        width: SizeConfig.w(84),
+        height: SizeConfig.h(70),
+        decoration: BoxDecoration(
+          color: _toppings[i] ? AppColors.primary.withValues(alpha: 0.1) : AppColors.background,
+          borderRadius: BorderRadius.circular(SizeConfig.w(15)),
+          border: _toppings[i] ? Border.all(color: AppColors.primary, width: 2) : null,
         ),
-        if (_toppings[i])
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              height: SizeConfig.h(22),
-              padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(6)),
-              decoration: BoxDecoration(
-                color: AppColors.textPrimary,
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(SizeConfig.w(13))),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      _toppingNames[i],
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(10), color: AppColors.white),
-                    ),
-                  ),
-                  Container(
-                    width: SizeConfig.w(16),
-                    height: SizeConfig.w(16),
-                    decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
-                    child: Icon(Icons.add, size: SizeConfig.w(12), color: AppColors.white),
-                  ),
-                ],
+        alignment: Alignment.center,
+        child: Image.asset(_toppingImages[i], width: SizeConfig.w(50), height: SizeConfig.h(50), fit: BoxFit.contain),
+      ),
+      SizedBox(height: SizeConfig.h(6)),
+      Container(
+        width: SizeConfig.w(84),
+        height: SizeConfig.h(22),
+        padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(6)),
+        decoration: BoxDecoration(
+          color: AppColors.textPrimary,
+          borderRadius: BorderRadius.circular(SizeConfig.w(11)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                _toppingNames[i],
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(10), color: AppColors.white),
               ),
             ),
-          ),
-      ]),
-      SizedBox(height: SizeConfig.h(8)),
-      if (!_toppings[i])
-        Row(mainAxisSize: MainAxisSize.min, children: [
-          Text(_toppingNames[i], style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(12), color: AppColors.textSecondary)),
-          SizedBox(width: SizeConfig.w(4)),
-          Icon(Icons.radio_button_unchecked, size: SizeConfig.w(16), color: AppColors.textSecondary),
-        ]),
+            Container(
+              width: SizeConfig.w(16),
+              height: SizeConfig.w(16),
+              decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+              child: Icon(Icons.add, size: SizeConfig.w(12), color: AppColors.white),
+            ),
+          ],
+        ),
+      ),
     ]));
 
   Widget _sideItem(int i) => GestureDetector(
     onTap: () => setState(() => _sideOptions[i] = !_sideOptions[i]),
     child: Column(children: [
-      Stack(children: [
-        Container(
-          width: SizeConfig.w(84),
-          height: SizeConfig.h(86),
-          decoration: BoxDecoration(
-            color: _sideOptions[i] ? AppColors.primary.withValues(alpha: 0.1) : AppColors.background,
-            borderRadius: BorderRadius.circular(SizeConfig.w(15)),
-            border: _sideOptions[i] ? Border.all(color: AppColors.primary, width: 2) : null,
-          ),
-          alignment: Alignment.center,
-          child: Image.asset(_sideImages[i], width: SizeConfig.w(65), height: SizeConfig.h(65), fit: BoxFit.contain),
+      Container(
+        width: SizeConfig.w(84),
+        height: SizeConfig.h(86),
+        decoration: BoxDecoration(
+          color: _sideOptions[i] ? AppColors.primary.withValues(alpha: 0.1) : AppColors.background,
+          borderRadius: BorderRadius.circular(SizeConfig.w(15)),
+          border: _sideOptions[i] ? Border.all(color: AppColors.primary, width: 2) : null,
         ),
-        if (_sideOptions[i])
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              height: SizeConfig.h(24),
-              padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(6)),
-              decoration: BoxDecoration(
-                color: AppColors.textPrimary,
-                borderRadius: BorderRadius.vertical(bottom: Radius.circular(SizeConfig.w(13))),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      _sideNames[i],
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(10), color: AppColors.white),
-                    ),
-                  ),
-                  Container(
-                    width: SizeConfig.w(16),
-                    height: SizeConfig.w(16),
-                    decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
-                    child: Icon(Icons.add, size: SizeConfig.w(12), color: AppColors.white),
-                  ),
-                ],
+        alignment: Alignment.center,
+        child: Image.asset(_sideImages[i], width: SizeConfig.w(65), height: SizeConfig.h(65), fit: BoxFit.contain),
+      ),
+      SizedBox(height: SizeConfig.h(6)),
+      Container(
+        width: SizeConfig.w(84),
+        height: SizeConfig.h(24),
+        padding: EdgeInsets.symmetric(horizontal: SizeConfig.w(6)),
+        decoration: BoxDecoration(
+          color: AppColors.textPrimary,
+          borderRadius: BorderRadius.circular(SizeConfig.w(12)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(
+              child: Text(
+                _sideNames[i],
+                overflow: TextOverflow.ellipsis,
+                style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(10), color: AppColors.white),
               ),
             ),
-          ),
-      ]),
-      SizedBox(height: SizeConfig.h(8)),
-      if (!_sideOptions[i])
-        Row(mainAxisSize: MainAxisSize.min, children: [
-          Text(_sideNames[i], style: AppTextStyles.robotoRegular.copyWith(fontSize: SizeConfig.w(12), color: AppColors.textSecondary)),
-          SizedBox(width: SizeConfig.w(4)),
-          Icon(Icons.radio_button_unchecked, size: SizeConfig.w(16), color: AppColors.textSecondary),
-        ]),
+            Container(
+              width: SizeConfig.w(16),
+              height: SizeConfig.w(16),
+              decoration: const BoxDecoration(color: AppColors.primary, shape: BoxShape.circle),
+              child: Icon(Icons.add, size: SizeConfig.w(12), color: AppColors.white),
+            ),
+          ],
+        ),
+      ),
     ]));
 
   Widget _priceText(String value, TextStyle style) {
